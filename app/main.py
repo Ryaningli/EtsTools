@@ -23,6 +23,7 @@ class TableData(BaseModel):
 
 
 class ContentRequest(BaseModel):
+    title: str = None
     formater: FormaterEnum
     content: str | TableData
 
@@ -56,7 +57,8 @@ def _table_data_to_excel(table_data: dict, filepath: str):
 
 @app.post('/generate-file')
 async def generate_file(request: ContentRequest):
-    file_id = str(uuid.uuid4())
+    file_id = request.title if request.title else str(uuid.uuid4())
+    file_id = file_id.strip().replace(' ', '_')
     filename = f'{file_id}.{FORMATER_FMT[request.formater]}'
     os.makedirs(BASE_DIR, exist_ok=True)
     filepath = os.path.join(BASE_DIR, filename)
