@@ -83,4 +83,6 @@ async def download_make_file(filename: str):
     filepath = os.path.join(BASE_DIR, filename)
     if not os.path.exists(filepath):
         raise HTTPException(status_code=404, detail=f'文件不存在或已删除：{filename}')
-    return FileResponse(filepath)
+    return FileResponse(filepath, headers={
+        'Access-Control-Allow-Origin': '*'
+    })
