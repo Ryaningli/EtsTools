@@ -1,3 +1,4 @@
+import datetime
 import json
 import os.path
 import uuid
@@ -59,7 +60,8 @@ def _table_data_to_excel(table_data: dict, filepath: str):
 async def generate_file(request: ContentRequest):
     file_id = request.title if request.title else str(uuid.uuid4())
     file_id = file_id.strip().replace(' ', '_')
-    filename = f'{file_id}.{FORMATER_FMT[request.formater]}'
+    now = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    filename = f'{file_id}_{now}.{FORMATER_FMT[request.formater]}'
     os.makedirs(BASE_DIR, exist_ok=True)
     filepath = os.path.join(BASE_DIR, filename)
     match request.formater:
